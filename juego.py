@@ -10,7 +10,7 @@ class NaveEspacial(pygame.sprite.Sprite):
 
 	def __init__(self):
 		pygame.sprite.Sprite.__init__(self)
-		self.ImagenNave = pygame.image.load("D:\Imagenes/Diseño y creación/Pixel Art/alfredo.jpg")
+		self.ImagenNave = pygame.image.load("D:\Imagenes/Diseño y creación/Pixel Art/alfredo.jpg").convert()
 
 		self.rect = self.ImagenNave.get_rect()
 		self.rect.centerx = ancho/2
@@ -41,7 +41,7 @@ class Proyectil(pygame.sprite.Sprite):
 	
 	def __init__(self, posx, posy):
 		pygame.sprite.Sprite.__init__(self)
-		self.ImagenProyectil = pygame.image.load("D:\Imagenes/Diseño y creación/Pixel Art/gato.jpg")
+		self.ImagenProyectil = pygame.image.load("D:\Imagenes/Diseño y creación/Pixel Art/gato.jpg").convert()
 		
 		self.rect = self.ImagenProyectil.get_rect()
 		self.velovidadDisparo = 1
@@ -84,7 +84,7 @@ def SpaceInvader():
 						jugador.rect.top -= jugador.velocidad
 					elif evento.key == K_DOWN or evento.key == ord('s'):
 						jugador.rect.bottom += jugador.velocidad
-					elif evento.key == ord(' '):
+					elif evento.key == ord(' ') or evento.type == MOUSEBUTTONDOWN:
 						jugador.disparar()
 		
 		proyectil.dibujar(ventana)
