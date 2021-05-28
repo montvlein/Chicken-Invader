@@ -5,7 +5,7 @@ from pygame.locals import *
 ancho = 940
 alto = 480
 
-class NaveEspacial(pygame.sprite.Sprite):
+class Jugador(pygame.sprite.Sprite):
 	"""Clase para las naves"""
 
 	def __init__(self):
@@ -73,15 +73,27 @@ class Proyectil(pygame.sprite.Sprite):
 		superficie.blit(self.ImagenProyectil, self.rect)
 
 class Enemigo(pygame.sprite.Sprite):
-	pass
+	
+	def __init__(self, x, y):
+		pygame.sprite.Sprite.__init__(self)
+		self.ImagenEnemigo = pygame.image.load("D:\Imagenes/Diseño y creación/Pixel Art/Cata_pixel_art_ 1.jpg").convert()
+		
+		self.rect = self.ImagenEnemigo.get_rect()
+		self.listaDisparo = []
+		self.velocidad = 5
+		self.rect.top = y
+		self.rect.left = x
+
+	def dibujar(self, superficie):
+		superficie.blit(self.ImagenEnemigo, self.rect)
 
 def SpaceInvader():
 	pygame.init()
 	ventana = pygame.display.set_mode((ancho,alto))
 	pygame.display.set_caption("Chicken Invader")
 
-	jugador = NaveEspacial()
-
+	jugador = Jugador()
+	enemigo = Enemigo(100,100)
 	enJuego = True
 	reloj = pygame.time.Clock()
 
@@ -110,6 +122,7 @@ def SpaceInvader():
 						jugador.disparar(x,y)
 		
 		jugador.dibujar(ventana)
+		enemigo.dibujar(ventana)
 		if len(jugador.listaDisparo)>0:
 			for x in jugador.listaDisparo:
 				x.dibujar(ventana)
