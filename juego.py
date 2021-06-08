@@ -76,16 +76,33 @@ class Enemigo(pygame.sprite.Sprite):
 	
 	def __init__(self, x, y):
 		pygame.sprite.Sprite.__init__(self)
-		self.ImagenEnemigo = pygame.image.load("D:\Imagenes/Diseño y creación/Pixel Art/Cata_pixel_art_ 1.jpg").convert()
+		self.Img1 = pygame.image.load("D:\Imagenes/Diseño y creación/Pixel Art/Cata_pixel_art_1.jpg").convert()
+		self.Img2 = pygame.image.load("D:\Imagenes/Diseño y creación/Pixel Art/Cata_pixel_art_2.jpg").convert()
+		self.Img3 = pygame.image.load("D:\Imagenes/Diseño y creación/Pixel Art/perro_03.jpg").convert()
+		self.listaImg = [self.Img1, self.Img2]
+		self.posImagen = 0
+
+		self.imagenEnemigo = self.listaImg[self.posImagen]
+		self.rect = self.imagenEnemigo.get_rect()
 		
-		self.rect = self.ImagenEnemigo.get_rect()
 		self.listaDisparo = []
 		self.velocidad = 5
 		self.rect.top = y
 		self.rect.left = x
 
+		self.tiempoCambio = 1
+
 	def dibujar(self, superficie):
-		superficie.blit(self.ImagenEnemigo, self.rect)
+		self.imagenEnemigo = self.listaImg[self.posImagen]
+		superficie.blit(self.imagenEnemigo, self.rect)
+
+	def comportamiento(self, tiempo):
+		if self.tiempoCambio == tiempo:
+			self.posImagen += 1
+			self.tiempoCambio += 1
+
+			if self.posImagen >= len(self.listaImg):
+				self.posImagen = 0
 
 def SpaceInvader():
 	pygame.init()
@@ -100,6 +117,7 @@ def SpaceInvader():
 	while True:
 		ventana.fill((255,255,255))
 		reloj.tick(60)
+		tiempo = int(pygame.time.get_ticks()/1000)
 		jugador.movimiento()
 
 		for evento in pygame.event.get():
@@ -121,8 +139,10 @@ def SpaceInvader():
 						x,y = jugador.rect.center
 						jugador.disparar(x,y)
 		
+		enemigo.comportamiento(tiempo)
 		jugador.dibujar(ventana)
 		enemigo.dibujar(ventana)
+
 		if len(jugador.listaDisparo)>0:
 			for x in jugador.listaDisparo:
 				x.dibujar(ventana)
