@@ -202,19 +202,35 @@ def SpaceInvader():
 				
 				if x.rect.top < 0:
 					jugador.listaDisparo.remove(x)
+				else:
+					for enemigo in listaEnemigo:
+						if x.rect.colliderect(enemigo.rect):
+							listaEnemigo.remove(enemigo)
+							jugador.listaDisparo.remove(x)
 
 		if len(listaEnemigo) > 0:
 			for enemigo in listaEnemigo:
 				enemigo.comportamiento(tiempo)
 				enemigo.dibujar(ventana)
 
+				if enemigo.rect.colliderect(jugador.rect):
+					print('te llenaron de mierda y perdiste ameo')
+
 				if len(enemigo.listaDisparo)>0: #disparo del enemigo
 					for x in enemigo.listaDisparo:
 						x.dibujar(ventana)
 						x.trayectoria()
 						
+						if x.rect.colliderect(jugador.rect):
+							print('te cago un pajaro')
+
 						if x.rect.top > 900:
 							enemigo.listaDisparo.remove(x)
+						else:
+							for disparo in jugador.listaDisparo:
+								if x.rect.colliderect(disparo.rect):
+									jugador.listaDisparo.remove(disparo)
+									enemigo.listaDisparo.remove(x)
 		
 		pygame.display.update()
 
