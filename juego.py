@@ -5,6 +5,7 @@ from random import randint
 #variables globales
 ancho = 940
 alto = 480
+listaEnemigo = []
 
 class Jugador(pygame.sprite.Sprite):
 	"""Clase para las naves"""
@@ -80,7 +81,7 @@ class Proyectil(pygame.sprite.Sprite):
 
 class Enemigo(pygame.sprite.Sprite):
 	
-	def __init__(self, x, y):
+	def __init__(self, x, y, distancia):
 		pygame.sprite.Sprite.__init__(self)
 		self.Img1 = pygame.image.load("D:\Imagenes/Diseño y creación/Pixel Art/Cata_pixel_art_1.jpg").convert()
 		self.Img2 = pygame.image.load("D:\Imagenes/Diseño y creación/Pixel Art/Cata_pixel_art_2.jpg").convert()
@@ -98,6 +99,9 @@ class Enemigo(pygame.sprite.Sprite):
 
 		self.rangoDisparo = 5
 		self.tiempoCambio = 1
+
+		self.limiteDerecha = x + distancia
+		self.limiteIzquierda = x - distancia
 
 		self.derecha = True
 		self.contador = 0
@@ -135,12 +139,12 @@ class Enemigo(pygame.sprite.Sprite):
 	def __movimientoLateral(self):
 		if self.derecha == True:
 			self.rect.left += self.velocidad
-			if self.rect.left > 500:
+			if self.rect.left > self.limiteDerecha:
 				self.derecha = False
 				self.contador += 1
 		else:
 			self.rect.left -= self.velocidad
-			if self.rect.left < 0:
+			if self.rect.left < self.limiteIzquierda:
 				self.derecha = True
 
 	def __movimientoDescenso(self):
@@ -150,13 +154,17 @@ class Enemigo(pygame.sprite.Sprite):
 		else:
 			self.rect.top += 1
 
+def cargarEnemigos():
+	enemigo = Enemigo(100,100,400)
+	listaEnemigo.append(enemigo)
+
 def SpaceInvader():
 	pygame.init()
 	ventana = pygame.display.set_mode((ancho,alto))
 	pygame.display.set_caption("Chicken Invader")
 
 	jugador = Jugador()
-	enemigo = Enemigo(100,100)
+	cargarEnemigos()
 	enJuego = True
 	reloj = pygame.time.Clock()
 
@@ -185,9 +193,7 @@ def SpaceInvader():
 						x,y = jugador.rect.center
 						jugador.disparar(x,y)
 		
-		enemigo.comportamiento(tiempo)
 		jugador.dibujar(ventana)
-		enemigo.dibujar(ventana)
 
 		if len(jugador.listaDisparo)>0: #disparo del jugador
 			for x in jugador.listaDisparo:
@@ -197,13 +203,19 @@ def SpaceInvader():
 				if x.rect.top < 0:
 					jugador.listaDisparo.remove(x)
 
-		if len(enemigo.listaDisparo)>0: #disparo del enemigo
-			for x in enemigo.listaDisparo:
-				x.dibujar(ventana)
-				x.trayectoria()
-				
-				if x.rect.top > 900:
-					enemigo.listaDisparo.remove(x)
+		if len(listaEnemigo) > 0:
+			for enemigo in listaEnemigo:
+				enemigo.comportamiento(tiempo)
+				enemigo.dibujar(ventana)
+
+				if len(enemigo.listaDisparo)>0: #disparo del enemigo
+					for x in enemigo.listaDisparo:
+						x.dibujar(ventana)
+						x.trayectoria()
+						
+						if x.rect.top > 900:
+							enemigo.listaDisparo.remove(x)
+		
 		pygame.display.update()
 
 SpaceInvader()
