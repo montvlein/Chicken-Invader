@@ -99,13 +99,17 @@ class Enemigo(pygame.sprite.Sprite):
 		self.rangoDisparo = 5
 		self.tiempoCambio = 1
 
+		self.derecha = True
+		self.contador = 0
+		self.Maxdescenso = self.rect.top+40
+
 	def dibujar(self, superficie):
 		self.imagenEnemigo = self.listaImg[self.posImagen]
 		superficie.blit(self.imagenEnemigo, self.rect)
 
 	def comportamiento(self, tiempo):
-		
-		self._ataque()
+		self.__movimientos()
+		self.__ataque()
 		if self.tiempoCambio == tiempo:
 			self.posImagen += 1
 			self.tiempoCambio += 1
@@ -113,14 +117,38 @@ class Enemigo(pygame.sprite.Sprite):
 			if self.posImagen >= len(self.listaImg):
 				self.posImagen = 0
 
-	def _ataque(self):
+	def __ataque(self):
 		if (randint(0,100)<self.rangoDisparo):
-			self._disparo()
+			self.__disparo()
 
-	def _disparo(self):
+	def __disparo(self):
 		x,y = self.rect.center
 		proyectilEnemigo = Proyectil(x,y,"D:\Imagenes/Diseño y creación/Pixel Art/perro_03.jpg", False)
 		self.listaDisparo.append(proyectilEnemigo)
+
+	def __movimientos(self):
+		if self.contador < 3:
+			self.__movimientoLateral()
+		else:
+			self.__movimientoDescenso()
+
+	def __movimientoLateral(self):
+		if self.derecha == True:
+			self.rect.left += self.velocidad
+			if self.rect.left > 500:
+				self.derecha = False
+				self.contador += 1
+		else:
+			self.rect.left -= self.velocidad
+			if self.rect.left < 0:
+				self.derecha = True
+
+	def __movimientoDescenso(self):
+		if self.Maxdescenso == self.rect.top:
+			self.contador = 0
+			self.Maxdescenso = self.rect.top + 40
+		else:
+			self.rect.top += 1
 
 def SpaceInvader():
 	pygame.init()
