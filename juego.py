@@ -8,6 +8,7 @@ from pygame.locals import *
 ancho = 940
 alto = 480
 listaEnemigo = []
+imagenJugador = ["./img/player.jpg"]
 
 def cargarEnemigos():
 	enemigo = Enemigo(100,100,400)
@@ -18,7 +19,7 @@ def SpaceInvader():
 	ventana = pygame.display.set_mode((ancho,alto))
 	pygame.display.set_caption("Chicken Invader")
 
-	jugador = Jugador()
+	jugador = Jugador(imagenJugador[0])
 	cargarEnemigos()
 	enJuego = True
 	reloj = pygame.time.Clock()

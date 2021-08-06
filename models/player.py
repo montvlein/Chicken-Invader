@@ -9,11 +9,11 @@ listaEnemigo = []
 class Jugador(pygame.sprite.Sprite):
 	"""Clase para las naves"""
 
-	def __init__(self):
+	def __init__(self, imagenJugador):
 		pygame.sprite.Sprite.__init__(self)
-		self.ImagenNave = pygame.image.load("D:\Imagenes/Diseño y creación/Pixel Art/alfredo.jpg").convert()
+		self.Imagen = pygame.image.load(imagenJugador).convert()
 
-		self.rect = self.ImagenNave.get_rect()
+		self.rect = self.Imagen.get_rect()
 		self.rect.centerx = ancho/2
 		self.rect.centery = alto-10
 
@@ -49,8 +49,8 @@ class Jugador(pygame.sprite.Sprite):
 				self.rect.bottom = alto+20
 	
 	def disparar(self, x, y):
-		disparo = Proyectil(x,y,"D:\Imagenes/Diseño y creación/Pixel Art/gato.jpg", True)
+		disparo = Proyectil(x,y,"./img/bulletCat.jpg", True)
 		self.listaDisparo.append(disparo)
 
 	def dibujar(self, superficie):
-		superficie.blit(self.ImagenNave, self.rect)
+		superficie.blit(self.Imagen, self.rect)

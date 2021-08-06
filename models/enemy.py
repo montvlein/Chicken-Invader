@@ -11,9 +11,8 @@ class Enemigo(pygame.sprite.Sprite):
 	
 	def __init__(self, x, y, distancia):
 		pygame.sprite.Sprite.__init__(self)
-		self.Img1 = pygame.image.load("D:\Imagenes/Diseño y creación/Pixel Art/Cata_pixel_art_1.jpg").convert()
-		self.Img2 = pygame.image.load("D:\Imagenes/Diseño y creación/Pixel Art/Cata_pixel_art_2.jpg").convert()
-		self.Img3 = pygame.image.load("D:\Imagenes/Diseño y creación/Pixel Art/perro_03.jpg").convert()
+		self.Img1 = pygame.image.load("./img/enemy_1.jpg").convert()
+		self.Img2 = pygame.image.load("./img/enemy_1.jpg").convert()
 		self.listaImg = [self.Img1, self.Img2]
 		self.posImagen = 0
 
@@ -55,7 +54,7 @@ class Enemigo(pygame.sprite.Sprite):
 
 	def __disparo(self):
 		x,y = self.rect.center
-		proyectilEnemigo = Proyectil(x,y,"D:\Imagenes/Diseño y creación/Pixel Art/perro_03.jpg", False)
+		proyectilEnemigo = Proyectil(x,y,"./img/bulletDog.jpg", False)
 		self.listaDisparo.append(proyectilEnemigo)
 
 	def __movimientos(self):
